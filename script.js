@@ -19,7 +19,11 @@
 
 //to lowerCase() et trim() pour les réponses
 
-const key = 'YF9Xsd5PnPosDQmnIUzbHhnIxKHJZC1oWkqbg0pG'
+// ok key
+// const key = 'YF9Xsd5PnPosDQmnIUzbHhnIxKHJZC1oWkqbg0pG'
+const key = '1LANPVUkED6xyCIjkRVVQAD0WC2xgoa709ko9v0c'
+
+
 flag = document.querySelector('#flag')
 countryName = document.querySelector('#country-name')
 pAnswer = document.querySelector('#player-answer')
@@ -28,6 +32,7 @@ submit = document.querySelector('#submit')
 // next = document.querySelector('#next')
 div = document.querySelector('div')
 trueOrFalse = document.querySelector('#true-false')
+const output = document.querySelector('#output')
 // countries = []
 score = 0
 
@@ -79,26 +84,37 @@ let state = 'question'
 // }
 
 submit.addEventListener('click', (data) => {
-    if (pAnswer.value === answer){
-        state = 'answer'
-        submit.value = 'Suivant'
-        console.log('Correct')
-        trueOrFalse.textContent = 'Correct'
-        score++
-        updateScore()
-        // buttonStates()
-        // chooseRandomCountry(data)
-        // NextButton()
-    } else {
-        console.log('Wrong')
-        // state = 'answer'
-        submit.value = 'Suivant'
-        trueOrFalse.textContent = 'Faux, la capitale est ' + answer
-        // buttonStates()
-        // chooseRandomCountry(data)
-        // NextButton()
+    if (state === 'question'){
+        if (pAnswer.value === answer){
+            state = 'answer'
+            submit.value = 'Suivant'
+            console.log('Correct')
+            trueOrFalse.textContent = 'Correct'
+            score++
+            updateScore()
+            pAnswer.value = ''
+            output.textContent = answer + " ✔"
+            output.classList = 'correct'
+            // buttonStates()
+            // chooseRandomCountry(data)
+            // NextButton()
+        } else {
+            console.log('Wrong')
+            // state = 'answer'
+            submit.value = 'Suivant'
+            trueOrFalse.textContent = 'Faux, la capitale est ' + answer
+            output.textContent = pAnswer.value
+            output.classList = 'wrong'
+            // buttonStates()
+            // chooseRandomCountry(data)
+            // NextButton()
+        }
+    } else if (state === 'answer'){
+        state = 'question'
+        submit.value = 'Valider'
+        trueOrFalse.textContent = ''
+        pAnswer.value = ''
     }
-    console.log(state)
 })
 
 window.addEventListener('click', (e) => {

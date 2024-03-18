@@ -6,3 +6,12 @@ body{
     margin-right: auto;
     margin-left: auto;
 }
+
+.correct{
+    color: green;
+}
+
+.wrong{
+    color: red;
+    text-decoration-line: line-through;
+}
