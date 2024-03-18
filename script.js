@@ -31,7 +31,7 @@ flag = document.querySelector('#flag')
 countryName = document.querySelector('#country-name')
 
 // player answer <input>
-pAnswer = document.querySelector('#player-answer')
+input = document.querySelector('#player-answer')
 
 // player score <h2>
 pScore = document.querySelector('#player-score')
@@ -117,7 +117,7 @@ submit.addEventListener('click', (data) => {
     if (state === 'question'){
 
         // The player's answer is correct
-        if (pAnswer.value === answer){
+        if (input.value === answer){
 
             // switch to answer state
             state = 'answer'
@@ -131,7 +131,7 @@ submit.addEventListener('click', (data) => {
             // display the updated score
             updateScore()
             // clear the input
-            pAnswer.value = ''
+            input.value = ''
             // tell the player that their answer is correct
             output.textContent = answer + " ✔"
             // give it a class for coloring purpose 
@@ -151,7 +151,7 @@ submit.addEventListener('click', (data) => {
             // tell the player that their answer is incorrect + the correct answer
             trueOrFalse.textContent = 'Faux, la capitale est ' + answer
             // display the player wrong answer
-            output.textContent = pAnswer.value
+            output.textContent = input.value
             // give it a class for coloring purpose
             output.classList = 'wrong'
         }
@@ -171,7 +171,7 @@ submit.addEventListener('click', (data) => {
         // clear the answer display
         trueOrFalse.textContent = ''
         // clear the input
-        pAnswer.value = ''
+        input.value = ''
     }
     
     // call the function to choose a random country
