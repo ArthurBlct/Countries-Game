@@ -19,22 +19,42 @@
 
 //to lowerCase() et trim() pour les réponses
 
-// ok key
+// my key
 // const key = 'YF9Xsd5PnPosDQmnIUzbHhnIxKHJZC1oWkqbg0pG'
+// alt key
 const key = '1LANPVUkED6xyCIjkRVVQAD0WC2xgoa709ko9v0c'
 
-
+// flag <img>
 flag = document.querySelector('#flag')
+
+// Country Name <h2>
 countryName = document.querySelector('#country-name')
+
+// player answer <input>
 pAnswer = document.querySelector('#player-answer')
+
+// player score <h2>
 pScore = document.querySelector('#player-score')
+
+// button <input> 'Valider/Suivant'
 submit = document.querySelector('#submit')
-// next = document.querySelector('#next')
+
+// uh <div> containing the button?
 div = document.querySelector('div')
+
+// statement if youre right or wrong <h2>
 trueOrFalse = document.querySelector('#true-false')
+
+// display the player answer <h2> whether it's right or wrong
 const output = document.querySelector('#output')
+
+// useless
 // countries = []
+
+//score number
 score = 0
+
+//------------------------------------------------------------------------
 
 updateScore = () => {
     pScore.textContent = `Score : ${score}`
@@ -45,80 +65,125 @@ updateScore()
 fetch(`https://countryapi.io/api/all?apikey=${key}`)
     .then(response => response.json())
     .then(data => {
-        console.log(data)
-        // console.log(Object.keys(data))
+
+            // console.log(data)
+
+        // store the countries shortcodes in an array
         const countries = Object.keys(data)
+
+        // call the function to choose a random country
         chooseRandomCountry(data, countries)
-        console.log(countries)
+
+            // console.log(countries)
     })
     .catch(error => console.error(error))
     
 
 function chooseRandomCountry(data, countries){
+    // declare the index of the random country from the array above
+    // randomIndex = random (number) between 0 and the length of the array
     const randomIndex = Math.floor(Math.random() * countries.length)
+
+    // declare the 'randomCode' code linked to the 'randomIndex'
+    // randomCode = shortcode, 2chars (string)
     const randomCode = countries[randomIndex]
+
+    // declare the 'randomCountry' object linked to the randomCode
+    // randomCountry = chosen country data (object)
     const randomCountry = data[randomCode]
+
+    //Title (html) change to the random country name (object.name)
     countryName.textContent = randomCountry.name
+
+    // declare the answer to the question (object.capital)
     answer = randomCountry.capital
-    console.log(randomCountry.capital)
+
+    // change the flag image to the random country flag (shortCode)
     flag.src = `https://flagcdn.com/96x72/${randomCode}.png`
+
+        // console.log(randomCountry.capital)
+
 }
 
-// function chooseRandomCountry(data){
-//     chosenCountry = countries[(Math.floor(Math.random() * countries.length))]
-//     console.log(chosenCountry)
-
-//     ////flag.src = `https://flagcdn.com/96x72/${chosenCountry}.png`
-//     // countryName.textContent = data[chosenCountry].name
-//     // answer = data[chosenCountry].capital
-// }
-
+// state will help us determine if player is answering or if the answer is being displayed
+// used for button states
 let state = 'question'
 
-// function buttonStates(){    
-//     if (state === 'question'){
-//         submit.value = 'Valider'
-//     } else {
-//         submit.value = 'Suivant'
-//     }
-// }
 
 submit.addEventListener('click', (data) => {
+//when the (submit) button is clicked
+
+    // The player is supposed to answer
     if (state === 'question'){
+
+        // The player's answer is correct
         if (pAnswer.value === answer){
+
+            // switch to answer state
             state = 'answer'
+            // change the button text to 'Next'
             submit.value = 'Suivant'
+            // change the text to 'Correct'
             console.log('Correct')
             trueOrFalse.textContent = 'Correct'
+            // add 1 to the score
             score++
+            // display the updated score
             updateScore()
+            // clear the input
             pAnswer.value = ''
+            // tell the player that their answer is correct
             output.textContent = answer + " ✔"
+            // give it a class for coloring purpose 
             output.classList = 'correct'
-            // buttonStates()
-            // chooseRandomCountry(data)
-            // NextButton()
+            
+                // chooseRandomCountry(data)
+
+        // The player's answer is incorrect
         } else {
+
             console.log('Wrong')
-            // state = 'answer'
+
+            // switch to answer state
+            state = 'answer'
+            // change the button text to 'Next'
             submit.value = 'Suivant'
+            // tell the player that their answer is incorrect + the correct answer
             trueOrFalse.textContent = 'Faux, la capitale est ' + answer
+            // display the player wrong answer
             output.textContent = pAnswer.value
+            // give it a class for coloring purpose
             output.classList = 'wrong'
-            // buttonStates()
-            // chooseRandomCountry(data)
-            // NextButton()
         }
+
+        // POSSIBLE IMPROVEMENTS?
+
+        // should check trueOrFalse/output difference
+        // right and wrong logics are not in the same order
+        // some of the logic is redundant
+
+    // The player is supposed to go to the next question
     } else if (state === 'answer'){
+        // switch to question state
         state = 'question'
+        // change the button text to 'Valider'
         submit.value = 'Valider'
+        // clear the answer display
         trueOrFalse.textContent = ''
+        // clear the input
         pAnswer.value = ''
     }
+    
+    // call the function to choose a random country
+    chooseRandomCountry(data)
 })
 
+// When Alt + click, display some debug infos
+// state, answer, score
 window.addEventListener('click', (e) => {
     if (e.altKey === true){
         console.log(state)
+        console.log(answer)
+        console.log(score)
     }
 })
